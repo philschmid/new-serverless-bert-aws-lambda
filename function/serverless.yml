@@ -1,0 +1,50 @@
+service: new-serverless-bert-lambda
+
+plugins:
+  - serverless-pseudo-parameters
+
+custom:
+  efsAccessPoint: ${ssm:/efs/accessPoint/id}
+  LocalMountPath: /mnt/efs
+  efs_pip_path: /lib
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: eu-central-1
+  memorySize: 3008 # optional, in MB, default is 1024
+  timeout: 60 # optional, in seconds, default is 6
+  environment: # Service wide environment variables
+    MNT_DIR: ${self:custom.LocalMountPath}
+    EFS_PIP_PATH: '${self:custom.LocalMountPath}${self:custom.efs_pip_path}'
+  iamManagedPolicies:
+    - arn:aws:iam::aws:policy/AmazonElasticFileSystemClientReadWriteAccess
+
+package:
+  exclude:
+    - test/**
+    - lib/**
+    - terraform/**
+    - node_modules/**
+    - .vscode/**
+    - .serverless/**
+    - .pytest_cache/**
+    - __pychache__/**
+
+functions:
+  questionanswering:
+    handler: handler.handler
+    fileSystemConfig:
+      localMountPath: ${self:custom.LocalMountPath}
+      arn: 'arn:aws:elasticfilesystem:${self:provider.region}:#{AWS::AccountId}:access-point/${self:custom.efsAccessPoint}'
+    vpc:
+      securityGroupIds:
+        - <your-default-security-group-id>
+      subnetIds:
+        - <your-default-subnet-id>
+        - <your-default-subnet-id>
+        - <your-default-subnet-id>
+    events:
+      - http:
+          path: qa
+          method: post
