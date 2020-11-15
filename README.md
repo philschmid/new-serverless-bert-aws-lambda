@@ -1,6 +1,6 @@
-# This the Repository for my [Configure the serverless.yaml, add EFS, and set up an API Gateway for inference](https://google.com) article
+# This the Repository for my [Configure the serverless.yaml, add EFS, and set up an API Gateway for inference](https://www.philschmid.de/new-serverless-bert-with-huggingface-aws-lambdam) article
 
-You can read this article on my blog at [Configure the serverless.yaml, add EFS, and set up an API Gateway for inference](https://google.com)
+You can read this article on my blog at [Configure the serverless.yaml, add EFS, and set up an API Gateway for inference](https://www.philschmid.de/new-serverless-bert-with-huggingface-aws-lambda)
 This repository is the result of the article and you can use it if you don´t want you build it yourself.
 
 ## Getting started
